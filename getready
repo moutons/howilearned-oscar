@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+
+getready_init()
+{
+	vagrantbin=$(which vagrant)
+	vagrantver=$(vagrant --version | awk '{print $NF}')
+	if [[ -z $vagrantbin ]]; then
+		echo "Vagrant not installed. Please install Vagrant from https://www.vagrantup.com/"
+		exit 1
+	elif [[ "$vagrantver" < 1.7.0 ]]; then
+		echo "Vagrant version must be greater than 1.7.0 - please update Vagrant from https://www.vagrantup.com/"
+		exit 1
+	fi
+
+	vboxbin=$(which virtualbox)
+	vboxver=$(virtualbox -h | awk '/Oracle VM/ { print $NF }')
+	if [[ -z $vagrantbin ]]; then
+		echo "VirtualBox not installed. Please install VirtualBox from https://www.virtualbox.org/"
+		exit 1
+	elif [[ "$vboxver" < 4.2.0 ]]; then
+		echo "VirtualBox version must be greater than 4.2.0 - please update VirtualBox from https://www.virtualbox.org/"
+		exit 1
+	fi
+}
+
+getready_install()
+{
+	plugin_list="$(vagrant plugin list)"
+	for plug in oscar vagrant-auto_network vagrant-hosts ; do
+		if [[ -z '$(echo $plugin_list | grep $plug)' ]] ; then
+			echo "Installing Vagrant plugin $plug"
+			vagrant plugin install $plug 
+		fi 
+	done
+
+	if [[ -z '$(vagrant box list | egrep "puppetlabs/centos-6.5-64-nocm")' ]] ; then 
+		vagrant box add puppetlabs/centos-6.5-64-nocm
+	fi
+}
+
+getready_parse()
+{
+	while (( $# > 0 ))
+	do
+		token="$1"
+		shift
+		case "$token" in
+
+			(help|usage)
+			  usage
+			  exit 0
+			  ;;
+
+			(*)
+			  usage
+			  exit 1
+			  ;;
+		esac
+	done
+}
+
+usage()
+{
+	printf "%b" "
+Usage:
+    getready
+Options
+    None
+
+"
+}
+
+getready_do()
+{
+	getready_parse "$@"
+	getready_init
+	getready_install
+}
+
+getready_do "$@"
