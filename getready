@@ -39,6 +39,14 @@ getready_install()
 	fi
 }
 
+getready_dir()
+{
+	curdir=$(pwd)
+	mkdir $curdir/git
+    git clone https://github.com/moutons/howilearned-control.git $curdir/git/howilearned-control
+    git clone https://github.com/moutons/howilearned-hiera.git $curdir/git/howilearned-hiera
+}
+
 getready_parse()
 {
 	while (( $# > 0 ))
@@ -66,7 +74,13 @@ usage()
 Usage:
     getready
 Options
-    None
+    None, silly!
+
+         _n_
+         \O
+     ____,/)____
+   ,'  |  <   | `<
+   `.__|______|_,<  SSt
 
 "
 }
@@ -76,6 +90,7 @@ getready_do()
 	getready_parse "$@"
 	getready_init
 	getready_install
+	getready_dir
 }
 
 getready_do "$@"
