@@ -1,0 +1,45 @@
+--- 
+roles: 
+  pe-puppet-master: 
+    private_networks: 
+      - 
+        auto_network: true
+        ip: "0.0.0.0"
+    provider: 
+      customize: 
+        - 
+          - modifyvm
+          - !ruby/symbol id
+          - "--memory"
+          - 1024
+      type: virtualbox
+    provisioners: 
+      - 
+        type: hosts
+      - 
+        inline: |-
+            iptables -I INPUT 4 -p tcp --syn  --dport 443 -j ACCEPT
+            iptables -I INPUT 4 -p tcp --syn  --dport 8140 -j ACCEPT 
+            iptables -I INPUT 4 -p tcp --syn  --dport 61613 -j ACCEPT
+        type: shell
+      - 
+        role: !ruby/symbol master
+        type: pe_bootstrap
+  pe-puppet-agent: 
+    private_networks: 
+      - 
+        auto_network: true
+        ip: "0.0.0.0"
+    provider: 
+      customize: 
+        - 
+          - modifyvm
+          - !ruby/symbol id
+          - "--memory"
+          - 1024
+      type: virtualbox
+    provisioners: 
+      - 
+        type: hosts
+      - 
+        type: pe_bootstrap

@@ -1,0 +1,10 @@
+[user]
+	name = Shaun Mouton
+	email = shaun.mouton@austintexas.gov
+[core]
+	editor = vim
+[push]
+	default = current
+[alias]
+    ci = commit -m
+    st = status -b
