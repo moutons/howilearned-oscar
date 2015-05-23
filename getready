@@ -76,11 +76,7 @@ Usage:
 Options
     None, silly!
 
-         _n_
-         \O
-     ____,/)____
-   ,'  |  <   | `<
-   `.__|______|_,<  SSt
+$(cat logo)
 
 "
 }
