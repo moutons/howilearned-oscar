@@ -42,7 +42,7 @@ getready_install()
 getready_dir()
 {
 	curdir=$(pwd)
-	mkdir $curdir/git
+	mkdir -p $curdir/git
     git clone https://github.com/moutons/howilearned-control.git $curdir/git/howilearned-control
     git clone https://github.com/moutons/howilearned-hiera.git $curdir/git/howilearned-hiera
 }
